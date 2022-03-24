@@ -4,19 +4,19 @@ const SUPABASE_URL = 'https://lrbzhpldjrxqkjskcizc.supabase.co';
 
 const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-export async function signUp (someEmail, somePassword) {
+export async function signUp (email, password) {
   const response = await client.auth.signUp({
-    email: someEmail,
-    password: somePassword,
+    email: email,
+    password: password,
 
   });
   return response;
 }
 
-export async function logIn (someEmail, somePassword) {
+export async function logIn (email, password) {
   const response = await client.auth.logIn({
-    email: someEmail,
-    password: somePassword,
+    email: email,
+    password: password,
 
   });
   return response;
