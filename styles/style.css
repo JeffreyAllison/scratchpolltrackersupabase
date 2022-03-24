@@ -2,7 +2,7 @@
 body {
     /* feel free to update these css variables for a quick theme */
     
-    --color1: white;
+    --color1: rgb(196, 231, 140);
     --color2: white;
     --color3: white;
     --color4: white;
@@ -89,3 +89,28 @@ footer {
     background-color: var(--color3);
     box-shadow: var(--shadow);
 }
+
+.current-poll-container {
+  height: 230px;
+  width: 100%;
+  border: solid 12px coral;
+  margin: 10px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.current-poll-container p, .current-poll-container h2 {
+  margin: 0;
+}
+
+.past-polls-list {
+  width: 100%;
+  min-height: 225px;
+  border: solid 5px black;
+  margin: 15px;
+  border-radius: 50px;
+}
+
