@@ -68,9 +68,9 @@
     "space-before-function-paren": [
       "error",
       {
-        "anonymous": "never",
-        "named": "never",
-        "asyncArrow": "always"
+        "anonymous": "ignore",
+        "named": "ignore",
+        "asyncArrow": "ignore"
       }
     ],
     "keyword-spacing": [
