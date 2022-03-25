@@ -1,4 +1,4 @@
-import { getPolls } from "../fetch-utils";
+import { createPoll, getPolls, logout, redirectIfNotLoggedIn } from '../fetch-utils';
 
 const currentPollContainerEl = document.querySelector('.current-poll-container');
 const beginPollingButton = document.querySelector('.begin-poll');
@@ -11,12 +11,21 @@ const option1MinusVoteButton = document.querySelector('.option-1-minus-vote');
 const option2AddVoteButton = document.querySelector('.option-2-add-vote');
 const option2MinusVoteButton = document.querySelector('.option-2-minus-vote');
 const formEl = document.querySelector('form');
+const logoutButton = document.querySelector('.logout');
 
 let currentPollQuestion = '';
 let currentOption1 = '';
 let currentOption2 = '';
 let currentVote1 = '';
 let currentVote2 = '';
+
+redirectIfNotLoggedIn();
+
+logoutButton.addEventListener('click', async () => {
+  await logout();
+
+  window.location.href = '../';
+});
 
 formEl.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -52,22 +61,23 @@ option2MinusVoteButton.addEventListener('click', () => {
   currentOption2.textContent = `${currentOption2} (${currentVote2})`;
 });
 
-beginPollingButton.addEventListener('click', () => {
+beginPollingButton.addEventListener('click', async () => {
 
   const pastPoll = {
     question: currentPollQuestion,
-    option1: '',
-    option2: '',
-    votes1: 0,
-    votes2: 0,
+    option1: currentOption1,
+    option2: currentOption2,
+    votes1: currentVote1,
+    votes2: currentVote2,
   };
-  createPoll(pastPoll);
+  await createPoll(pastPoll);
 
-  //question: '',
-  //option1: '',
-  //option2: '',
-  //votes1: 0,
-  //votes2: 0,
+  await fetchAndDisplayPolls();
+  currentPollQuestion = '';
+  currentOption1 = '';
+  currentOption2 = '';
+  currentVote1 = 0;
+  currentVote2 = 0;
 
   displayCurrentQuestion();
 });
