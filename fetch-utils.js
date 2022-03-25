@@ -4,6 +4,22 @@ const SUPABASE_URL = 'https://lrbzhpldjrxqkjskcizc.supabase.co';
 
 const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+export async function createPoll (somePastPoll) {
+  const response = await client
+    .from('past_polls')
+    .insert(somePastPoll);
+
+  return response.body;
+}
+
+export async function getPolls () {
+  const response = await client
+    .from('past_polls')
+    .select('*');
+
+  return response.body;
+}
+
 export async function signUp (randomEmail, randomPassword) {
   const response = await client.auth.signUp({
     email: randomEmail,

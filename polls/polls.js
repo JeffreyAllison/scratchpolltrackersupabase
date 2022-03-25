@@ -25,9 +25,7 @@ formEl.addEventListener('submit', (e) => {
   currentOption1 = data.get('option1');
   currentOption2 = data.get('option2');
 
-  currentQuestionEl.textContent = currentPollQuestion;
-  currentOption1El.textContent = currentOption1;
-  currentOption2El.textContent = currentOption2;
+  displayCurrentQuestion();
 
   formEl.reset();
 });
@@ -50,6 +48,26 @@ option1MinusVoteButton.addEventListener('click', () => {
 option2MinusVoteButton.addEventListener('click', () => {
   currentVote2--;
   currentOption2.textContent = `${currentOption2} (${currentVote2})`;
+});
+
+beginPollingButton.addEventListener('click', () => {
+
+  const pastPoll = {
+    question: currentPollQuestion,
+    option1: '',
+    option2: '',
+    votes1: 0,
+    votes2: 0,
+  };
+  createPoll(pastPoll);
+
+  //question: '',
+  //option1: '',
+  //option2: '',
+  //votes1: 0,
+  //votes2: 0,
+
+  displayCurrentQuestion();
 });
 
 function displayCurrentQuestion () {
