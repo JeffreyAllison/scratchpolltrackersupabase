@@ -14,14 +14,6 @@ const option2MinusVoteButton = document.querySelector('.option-2-minus-vote');
 const endPollingButton = document.querySelector('.end-poll');
 //const voteButtons = document.querySelector('.vote-buttons-container');
 
-//const currentQuestionEl = document.querySelector('.current-question-text');
-//const currentOption1El = document.querySelector('.option-1-text');
-//const currentOption2El = document.querySelector('.option-2-text');
-
-//const optionOneLabel = document.getElementById('option-1-name');
-//const optionTwoLabel = document.getElementById('option-2-name');
-//const questionLabel = document.getElementById('question-name');
-
 let currentPollQuestion = '';
 let currentOption1 = '';
 let currentOption2 = '';
@@ -36,10 +28,6 @@ formEl.addEventListener('submit', (e) => {
   currentPollQuestion = data.get('question-name');
   currentOption1 = data.get('option-1-name');
   currentOption2 = data.get('option-2-name');
-
-  //questionLabel.textContent = currentPollQuestion;
-  //optionOneLabel.textContent = currentOption1;
-  //optionTwoLabel.textContent = currentOption2;
 
   formEl.reset();
 
@@ -104,10 +92,6 @@ window.addEventListener('load', async () => {
 function displayCurrentQuestion () {
 
   currentPollContainerEl.textContent = '';
-
-  //questionLabel.textContent = currentPollQuestion;
-  //optionOneLabel.textContent = currentOption1;
-  //optionTwoLabel.textContent = currentOption2;
 
   const pastPoll = {
     question: currentPollQuestion,
