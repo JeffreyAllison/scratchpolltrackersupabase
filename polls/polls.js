@@ -1,3 +1,5 @@
+import { getPolls } from "../fetch-utils";
+
 const currentPollContainerEl = document.querySelector('.current-poll-container');
 const beginPollingButton = document.querySelector('.begin-poll');
 const pastPollsEl = document.querySelector('.previous-polls-list');
@@ -74,4 +76,17 @@ function displayCurrentQuestion () {
   currentQuestionEl.textContent = currentPollQuestion;
   currentOption1El.textContent = currentOption1;
   currentOption2El.textContent = currentOption2;
+}
+
+async function fetchAndDisplayPolls () {
+  const polls = await getPolls();
+
+  pastPollsEl.textContent = '';
+  for (let poll of polls) {
+    const pollEl = document.createElement('div');
+
+    pollEl.textContent = JSON.stringify(poll);
+
+    pastPollsEl.append(pollEl);
+  }
 }
