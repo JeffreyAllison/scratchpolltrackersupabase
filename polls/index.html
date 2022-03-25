@@ -16,7 +16,6 @@
 <body>
   <header>
     <div class="gutter-right logo">
-      <img src="./assets/big-logo.png" />
       <button class="logout">Logout</button>
     </div>
   </header>
@@ -25,22 +24,22 @@
       <form>
         <label>
           Question
-          <input name="question" />
+          <input name="question-name" />
         </label>
         <label>
           Option 1
-          <input name="option-1" />
+          <input name="option-1-name" />
         </label>
         <label>
           Option 2
-          <input name="option-2" />
+          <input name="option-2-name" />
         </label>
-        <button class="begin-poll">Begin Polling</button>
+        <button>Begin Polling</button>
       </form>
       <h2>Current Poll:</h2>
       <div class="current-poll-container">
-        <p class="current-question-text">
-        </p>
+      </div>
+      <div class="vote-buttons-container">
         <p class="option-1-text">Vote Option 1</p>
         <button class="option-1-add-vote">+</button>
         <button class="option-1-minus-vote">-</button>
@@ -48,13 +47,12 @@
         <p class="option-2-text">Vote Option 2</p>
         <button class="option-2-add-vote">+</button>
         <button class="option-2-minus-vote">-</button>
-
       </div>
       <div>
         <button class="end-poll">End Polling</button>
       </div>
       <h3>Previous Polls</h3>
-      <div class="previous-polls-list">
+      <div class="previous-polls-container">
 
       </div>
 

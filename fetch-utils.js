@@ -4,10 +4,10 @@ const SUPABASE_URL = 'https://lrbzhpldjrxqkjskcizc.supabase.co';
 
 const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-export async function createPoll (somePastPoll) {
+export async function createPoll (pastPoll) {
   const response = await client
     .from('past_polls')
-    .insert(somePastPoll);
+    .insert(pastPoll);
 
   return response.body;
 }
@@ -20,6 +20,16 @@ export async function getPolls () {
   return response.body;
 }
 
+export function getUser () {
+  return client.auth.session();
+}
+
+export async function checkAuth () {
+  const user = await getUser();
+
+  if (!user) location.replace('../');
+}
+
 export async function signUp (randomEmail, randomPassword) {
   const response = await client.auth.signUp({
     email: randomEmail,
@@ -30,7 +40,7 @@ export async function signUp (randomEmail, randomPassword) {
 }
 
 export async function logIn (randomEmail, randomPassword) {
-  const response = await client.auth.logIn({
+  const response = await client.auth.signIn({
     email: randomEmail,
     password: randomPassword,
 
@@ -38,20 +48,6 @@ export async function logIn (randomEmail, randomPassword) {
   return response;
 }
 
-export function getUser () {
-  const user = client.auth.user();
-
-  return user;
-}
-
 export async function logout () {
   await client.auth.signOut();
-}
-
-export function redirectIfNotLoggedIn () {
-  const user = getUser();
-
-  if (!user) {
-    window.location.href = '../';
-  }
 }

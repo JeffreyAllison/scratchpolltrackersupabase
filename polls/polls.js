@@ -1,25 +1,95 @@
-import { createPoll, getPolls, logout, redirectIfNotLoggedIn } from '../fetch-utils';
+import { createPoll, getPolls, logout } from '../fetch-utils.js';
+import { renderPoll } from '../render-utils.js';
 
 const currentPollContainerEl = document.querySelector('.current-poll-container');
-const beginPollingButton = document.querySelector('.begin-poll');
-const pastPollsEl = document.querySelector('.previous-polls-list');
-const currentQuestionEl = document.querySelector('.current-question-text');
-const currentOption1El = document.querySelector('.option-1-text');
-const currentOption2El = document.querySelector('.option-2-text');
+const pastPollsEl = document.querySelector('.previous-polls-container');
+const logoutButton = document.querySelector('.logout');
+
+const formEl = document.querySelector('form');
+
 const option1AddVoteButton = document.querySelector('.option-1-add-vote');
 const option1MinusVoteButton = document.querySelector('.option-1-minus-vote');
 const option2AddVoteButton = document.querySelector('.option-2-add-vote');
 const option2MinusVoteButton = document.querySelector('.option-2-minus-vote');
-const formEl = document.querySelector('form');
-const logoutButton = document.querySelector('.logout');
+const endPollingButton = document.querySelector('.end-poll');
+//const voteButtons = document.querySelector('.vote-buttons-container');
+
+//const currentQuestionEl = document.querySelector('.current-question-text');
+//const currentOption1El = document.querySelector('.option-1-text');
+//const currentOption2El = document.querySelector('.option-2-text');
+
+//const optionOneLabel = document.getElementById('option-1-name');
+//const optionTwoLabel = document.getElementById('option-2-name');
+//const questionLabel = document.getElementById('question-name');
 
 let currentPollQuestion = '';
 let currentOption1 = '';
 let currentOption2 = '';
-let currentVote1 = '';
-let currentVote2 = '';
+let currentVote1 = 0;
+let currentVote2 = 0;
 
-redirectIfNotLoggedIn();
+formEl.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const data = new FormData(formEl);
+
+  currentPollQuestion = data.get('question-name');
+  currentOption1 = data.get('option-1-name');
+  currentOption2 = data.get('option-2-name');
+
+  //questionLabel.textContent = currentPollQuestion;
+  //optionOneLabel.textContent = currentOption1;
+  //optionTwoLabel.textContent = currentOption2;
+
+  formEl.reset();
+
+  displayCurrentQuestion();
+});
+
+option1AddVoteButton.addEventListener('click', () => {
+  currentVote1++;
+
+  displayCurrentQuestion();
+});
+
+option2AddVoteButton.addEventListener('click', () => {
+  currentVote2++;
+
+  displayCurrentQuestion();
+});
+
+option1MinusVoteButton.addEventListener('click', () => {
+  currentVote1--;
+
+  displayCurrentQuestion();
+});
+
+option2MinusVoteButton.addEventListener('click', () => {
+  currentVote2--;
+
+  displayCurrentQuestion();
+});
+
+endPollingButton.addEventListener('click', async () => {
+  const pastPoll = {
+    question: currentPollQuestion,
+    option1: currentOption1,
+    option2: currentOption2,
+    votes1: currentVote1,
+    votes2: currentVote2,
+  };
+
+  await createPoll(pastPoll);
+
+  await fetchAndDisplayPolls();
+  currentPollQuestion = 'Poll Question';
+  currentOption1 = 'Option 1';
+  currentOption2 = 'Option 2';
+  currentVote1 = 0;
+  currentVote2 = 0;
+
+  displayCurrentQuestion();
+});
 
 logoutButton.addEventListener('click', async () => {
   await logout();
@@ -27,41 +97,17 @@ logoutButton.addEventListener('click', async () => {
   window.location.href = '../';
 });
 
-formEl.addEventListener('submit', (e) => {
-  e.preventDefault();
-
-  const data = new FormData(formEl);
-
-  currentPollQuestion = data.get('question');
-  currentOption1 = data.get('option1');
-  currentOption2 = data.get('option2');
-
-  displayCurrentQuestion();
-
-  formEl.reset();
+window.addEventListener('load', async () => {
+  await fetchAndDisplayPolls();
 });
 
-option1AddVoteButton.addEventListener('click', () => {
-  currentVote1++;
-  currentOption1.textContent = `${currentOption1} (${currentVote1})`;
-});
+function displayCurrentQuestion () {
 
-option2AddVoteButton.addEventListener('click', () => {
-  currentVote2++;
-  currentOption2.textContent = `${currentOption2} (${currentVote2})`;
-});
+  currentPollContainerEl.textContent = '';
 
-option1MinusVoteButton.addEventListener('click', () => {
-  currentVote1--;
-  currentOption1.textContent = `${currentOption1} (${currentVote1})`;
-});
-
-option2MinusVoteButton.addEventListener('click', () => {
-  currentVote2--;
-  currentOption2.textContent = `${currentOption2} (${currentVote2})`;
-});
-
-beginPollingButton.addEventListener('click', async () => {
+  //questionLabel.textContent = currentPollQuestion;
+  //optionOneLabel.textContent = currentOption1;
+  //optionTwoLabel.textContent = currentOption2;
 
   const pastPoll = {
     question: currentPollQuestion,
@@ -70,38 +116,23 @@ beginPollingButton.addEventListener('click', async () => {
     votes1: currentVote1,
     votes2: currentVote2,
   };
-  await createPoll(pastPoll);
 
-  await fetchAndDisplayPolls();
-  currentPollQuestion = '';
-  currentOption1 = '';
-  currentOption2 = '';
-  currentVote1 = 0;
-  currentVote2 = 0;
+  const pollEl = renderPoll(pastPoll);
 
-  displayCurrentQuestion();
-});
-
-window.addEventListener('load', async () => {
-  await fetchAndDisplayPolls();
-
-});
-
-function displayCurrentQuestion () {
-  currentQuestionEl.textContent = currentPollQuestion;
-  currentOption1El.textContent = currentOption1;
-  currentOption2El.textContent = currentOption2;
+  currentPollContainerEl.append(pollEl);
 }
 
 async function fetchAndDisplayPolls () {
-  const polls = await getPolls();
 
   pastPollsEl.textContent = '';
-  for (let poll of polls) {
-    const pollEl = document.createElement('div');
 
-    pollEl.textContent = JSON.stringify(poll);
+  const polls = await getPolls();
+
+  for (let poll of polls) {
+    const pollEl = renderPoll(poll);
 
     pastPollsEl.append(pollEl);
   }
 }
+
+displayCurrentQuestion;
