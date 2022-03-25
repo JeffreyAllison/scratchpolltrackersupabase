@@ -72,6 +72,11 @@ beginPollingButton.addEventListener('click', () => {
   displayCurrentQuestion();
 });
 
+window.addEventListener('load', async () => {
+  await fetchAndDisplayPolls();
+
+});
+
 function displayCurrentQuestion () {
   currentQuestionEl.textContent = currentPollQuestion;
   currentOption1El.textContent = currentOption1;
