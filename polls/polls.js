@@ -32,6 +32,26 @@ formEl.addEventListener('submit', (e) => {
   formEl.reset();
 });
 
+option1AddVoteButton.addEventListener('click', () => {
+  currentVote1++;
+  currentOption1.textContent = `${currentOption1} (${currentVote1})`;
+});
+
+option2AddVoteButton.addEventListener('click', () => {
+  currentVote2++;
+  currentOption2.textContent = `${currentOption2} (${currentVote2})`;
+});
+
+option1MinusVoteButton.addEventListener('click', () => {
+  currentVote1--;
+  currentOption1.textContent = `${currentOption1} (${currentVote1})`;
+});
+
+option2MinusVoteButton.addEventListener('click', () => {
+  currentVote2--;
+  currentOption2.textContent = `${currentOption2} (${currentVote2})`;
+});
+
 function displayCurrentQuestion () {
   currentQuestionEl.textContent = currentPollQuestion;
   currentOption1El.textContent = currentOption1;
